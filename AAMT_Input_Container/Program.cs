@@ -7,7 +7,7 @@ namespace AAMT_Input_Container
         static void Main(string[] args)
         {
             Input AAMT_STRING = new Input("Hello World!");
-            Console.WriteLine(AAMT_STRING.step(4).step().step().back(4).back().reset().step().step(5).hasLess(6));
+            Console.WriteLine( AAMT_STRING.step(4).step().step().jumpForward(7) );
         }
     }
 
@@ -64,12 +64,12 @@ namespace AAMT_Input_Container
         public bool hasMore(int numOfSteps = 1)
         {
             if (numOfSteps <= 0) throw new Exception("Invalid number of steps");
-            return (this.position + numOfSteps) < this.length;
+            return checked (this.position + numOfSteps) < this.length;
         }
         public bool hasLess(int numOfSteps = 1)
         {
             if (numOfSteps <= 0) throw new Exception("Invalid number of steps");
-            return (this.position - numOfSteps) > -1;
+            return (this.position - numOfSteps) > -1; // -2  -2147483647
         }
         //callback -> delegate
         public Input step(int numOfSteps = 1)
@@ -110,6 +110,26 @@ namespace AAMT_Input_Container
             }
 
             return '\0';
+        }
+
+        public string jumpForward(uint numOfChar)
+        {
+            string result = "" + this.Character;
+            for (int i = 1; i < numOfChar; i++)
+            {
+                result += this.step().Character;
+            }
+            return result;
+        }
+
+        public string jumpBackward(uint numOfChar)
+        {
+            string result = "" + this.Character;
+            for (int i = 1; i < numOfChar; i++)
+            {
+                result = this.back().Character + result;
+            }
+            return result;
         }
 
         // public string combine() { return ""; } // take cp + np and return as string
